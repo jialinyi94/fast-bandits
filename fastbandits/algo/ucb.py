@@ -29,7 +29,8 @@ def score(
     """
     exploration_bonus = numpy.inf * numpy.ones_like(mean_rewards)
     warmup = trial_counts > 0
-    exploration_bonus[warmup] = numpy.sqrt(2 * numpy.log(t) / trial_counts[warmup])
+    if t > 0:
+        exploration_bonus[warmup] = numpy.sqrt(2 * numpy.log(t) / trial_counts[warmup])
     ucb = mean_rewards + exploration_bonus
     return ucb
 
