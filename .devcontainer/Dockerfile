@@ -18,15 +18,18 @@ RUN if [ -f "/tmp/conda-tmp/environment.yml" ]; then umask 0002 && /opt/conda/bi
 # Navigate to the fastbandits directory
 WORKDIR /workspace/fastbandits
 
-# Create a Python 3.11 environment and install the python dependencies in requirements.txt
+# Create a Python 3.11 environment
 RUN conda create -n fastbandits python=3.11
 
-# Initialize conda
-RUN conda init
+# Initialize conda for bash and activate the environment
+RUN conda init bash && \
+    echo "conda activate fastbandits" >> ~/.bashrc
 
-# Activate the fastbandits conda env
-RUN conda activate fastbandits
-RUN pip install -r requirements.txt
+# Install pip requirements and the fastbandits package
+SHELL ["/bin/bash", "--login", "-c"]
+RUN conda activate fastbandits && \
+    pip install -r requirements.txt && \
+    pip install -e .
 
-# install the fastbandits package in development mode
-RUN pip install -e .
+# Set the default command to bash
+CMD ["/bin/bash"]
