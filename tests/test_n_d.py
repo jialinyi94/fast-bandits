@@ -20,7 +20,7 @@ def test_score_nd():
         scores, 
         [
             [numpy.inf, 0.2 + numpy.sqrt(2 * numpy.log(t) / 10), 0.3 + numpy.sqrt(2 * numpy.log(t) / 2)], 
-            [0.4 + numpy.sqrt(2 * numpy.log(t) / 4), 0.5 + numpy.sqrt(2 * numpy.log(t) / 5), 0.6 + numpy.sqrt(2 * numpy.log(t) / 6)]
+            [0.4 + numpy.sqrt(2 * numpy.log(t) / 3), 0.5 + numpy.sqrt(2 * numpy.log(t) / 4), 0.6 + numpy.sqrt(2 * numpy.log(t) / 5)]
         ]
     )
 
