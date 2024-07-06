@@ -7,7 +7,7 @@ RUN if [ -f "/tmp/conda-tmp/environment.yml" ]; then umask 0002 && /opt/conda/bi
     && rm -rf /tmp/conda-tmp
 
 # Set the correct working directory
-WORKDIR /workspaces/fast-bandits
+WORKDIR /workspaces/xbandits
 
 # Copy requirements.txt and setup.py into the container
 COPY requirements.txt setup.py ./
