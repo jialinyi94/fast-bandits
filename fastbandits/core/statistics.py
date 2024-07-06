@@ -34,6 +34,6 @@ def update_mean_and_counts(
     old_sum = mean_rewards * trial_counts
     new_sum = old_sum + inc_rewards
     new_counts = trial_counts + inc_counts
-    new_means = new_sum / new_counts
-    new_means[new_counts == 0] = mean_rewards[new_counts == 0]
+    new_means = numpy.zeros_like(mean_rewards)
+    new_means[new_counts > 0] = new_sum[new_counts > 0] / new_counts[new_counts > 0]
     return new_means, new_counts
