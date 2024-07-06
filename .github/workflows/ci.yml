@@ -41,8 +41,9 @@ jobs:
     - name: Run tests with coverage
       run: pytest --cov=xbandits --cov-report=xml
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4.0.1
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
         flags: unittests
         fail_ci_if_error: true
