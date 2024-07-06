@@ -3,6 +3,30 @@ import numpy
 from fastbandits.core.statistics import update_mean_and_counts
 
 
+def initialize(
+    p_dims: tuple[int, ...],
+    num_arms: int,
+):
+    """Initialize the mean_rewards and trial_counts for each arm.
+
+    Parameters
+    ----------
+    p_dims : tuple[int, ...]
+        the dimensions of the environment.
+    num_arms : int
+        the number of arms.
+    
+    Returns
+    -------
+    mean_rewards : numpy.ndarray
+        a numpy array of shape (..., num_arms) where the mean rewards for each arm are stored.
+    trial_counts : numpy.ndarray
+        a numpy array of shape (..., num_arms) where the number of trials for each arm are stored.
+    """
+    arm_shape = p_dims + (num_arms,)
+    return numpy.zeros(arm_shape), numpy.zeros(arm_shape)
+
+
 def score(
     t: int,
     mean_rewards: numpy.ndarray,
@@ -57,7 +81,7 @@ def select_arm(
         a numpy array of shape (...) where the index of the selected arm is stored.
     """
     ucb_scores = score(t, mean_rewards, trial_counts)
-    return numpy.argmax(ucb_scores, axis=-1)
+    return numpy.array(numpy.argmax(ucb_scores, axis=-1))
 
 
 def update(
@@ -86,4 +110,10 @@ def update(
     trial_counts : numpy.ndarray
         a numpy array of shape (..., num_arms) where the updated number of trials for each arm are stored.
     """
-    return update_mean_and_counts(sel_arms, recv_rewards, mean_rewards, trial_counts)
+    new_mean_rewards, new_trial_counts = update_mean_and_counts(
+        mean_rewards, 
+        trial_counts,
+        sel_arms[..., numpy.newaxis], 
+        recv_rewards[..., numpy.newaxis], 
+    )
+    return new_mean_rewards, new_trial_counts
