@@ -23,6 +23,6 @@ def realized_rewards(
         a numpy array of shape (...) where the realized rewards for the selected arms are stored.
     """
     *_, num_arms = envs.shape
-    embedding = (selected_arms[..., numpy.newaxis] == numpy.arange(num_arms)).astype(int)
+    embedding = numpy.eye(num_arms)[selected_arms]
     inst_rewards = numpy.sum(envs * embedding, axis=-1)
     return inst_rewards

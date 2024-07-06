@@ -44,7 +44,7 @@ def play(
     for t in range(num_rounds):
         sel_arms = arm_sel_func(t, *states)
         env_snapshot = env[..., t, :]
-        sel_arms_embedding = (sel_arms[..., numpy.newaxis] == numpy.arange(num_arms)).astype(int)
+        sel_arms_embedding = numpy.eye(num_arms)[sel_arms]
         recv_rewards = numpy.sum(env_snapshot * sel_arms_embedding, axis=-1)
         states = state_upd_func(sel_arms, recv_rewards, *states)
 

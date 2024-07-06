@@ -28,7 +28,7 @@ def update_mean_and_counts(
         a numpy array of shape (..., num_arms) where the updated number of trials for each arm is stored.
     """
     num_arms = mean_rewards.shape[-1]
-    embedding = (arms[..., numpy.newaxis] == numpy.arange(num_arms)).astype(int)
+    embedding = numpy.eye(num_arms)[arms]
     inc_rewards = numpy.sum(rewards[..., numpy.newaxis] * embedding, axis=-2)
     inc_counts = numpy.sum(embedding, axis=-2)
     old_sum = mean_rewards * trial_counts
