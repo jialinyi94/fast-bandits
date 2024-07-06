@@ -1,0 +1,10 @@
+numpy
+scipy
+numba
+polars
+cython
+xarray
+hvplot
+panel
+dask[complete]
+ortools
