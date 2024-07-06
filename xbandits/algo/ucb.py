@@ -1,6 +1,6 @@
 import numpy
 
-from fastbandits.core.statistics import update_mean_and_counts
+from xbandits.core.statistics import update_mean_and_counts
 
 
 def initialize(

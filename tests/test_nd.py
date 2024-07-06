@@ -1,6 +1,6 @@
 import numpy
-import fastbandits.algo.ucb as ucb
-import fastbandits.core.rollout as rollout
+import xbandits.algo.ucb as ucb
+import xbandits.core.rollout as rollout
 
 
 def test_score_nd():

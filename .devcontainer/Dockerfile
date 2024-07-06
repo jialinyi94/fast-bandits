@@ -13,15 +13,15 @@ WORKDIR /workspaces/fast-bandits
 COPY requirements.txt setup.py ./
 
 # Create a Python 3.11 environment
-RUN conda create -n fastbandits python=3.11
+RUN conda create -n xbandits python=3.11
 
 # Initialize conda for bash and activate the environment
 RUN conda init bash && \
-    echo "conda activate fastbandits" >> ~/.bashrc
+    echo "conda activate xbandits" >> ~/.bashrc
 
-# Install pip requirements and the fastbandits package
+# Install pip requirements and the xbandits package
 SHELL ["/bin/bash", "--login", "-c"]
-RUN conda activate fastbandits && \
+RUN conda activate xbandits && \
     pip install -r requirements.txt && \
     pip install -e .
 
