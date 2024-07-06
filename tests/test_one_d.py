@@ -20,6 +20,8 @@ def test_select_arm_1d():
 def test_play_1d():
     rounds, arms = 1000, 10
     rng = numpy.random.default_rng(0)
-    env = rng.binomial(1, p=numpy.linspace(0.1, 0.9, 10), size=(rounds, arms))
+    env = rng.binomial(1, p=numpy.linspace(0.1, 0.9, arms), size=(rounds, arms))
     decisions = rollout.play(env, ucb.initialize, ucb.select_arm, ucb.update)
-    assert numpy.mean(decisions[..., numpy.newaxis] == numpy.arange(arms))[-1] > 0.9
+    one_hot_decisions = numpy.eye(arms)[decisions]
+    freq = numpy.mean(one_hot_decisions, axis=0)
+    assert numpy.argmax(freq) == arms - 1
