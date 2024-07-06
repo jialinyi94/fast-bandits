@@ -5,6 +5,14 @@
 	"build": { 
 		"context": "..",
 		"dockerfile": "Dockerfile"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"njpwerner.autodocstring",
+				"GitHub.copilot"
+			]
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
