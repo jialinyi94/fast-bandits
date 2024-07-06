@@ -1,6 +1,5 @@
 import numpy
 
-from fastbandits.core.regret import realized_rewards
 from fastbandits.core.statistics import update_mean_and_counts
 
 
@@ -24,9 +23,15 @@ def score(
     -------
     scores : numpy.ndarray
         a numpy array of shape (..., num_arms) where the UCB score for each arm is stored.
+
+    ::math::
+        UCB = mean_rewards + sqrt(2 * log(t) / trial_counts if trial_counts > 0 else inf
     """
-    exploration_bonus = numpy.sqrt(2 * numpy.log(t) / trial_counts)
-    return mean_rewards + exploration_bonus
+    exploration_bonus = numpy.inf * numpy.ones_like(mean_rewards)
+    warmup = trial_counts > 0
+    exploration_bonus[warmup] = numpy.sqrt(2 * numpy.log(t) / trial_counts[warmup])
+    ucb = mean_rewards + exploration_bonus
+    return ucb
 
 
 def select_arm(
@@ -88,4 +93,14 @@ def rollout(
     prior_mean_rewards: numpy.ndarray | None,
     prior_trial_counts: numpy.ndarray | None,
 ):
+    """Rollout the UCB algorithm on the environment.
+    """
     pass
+
+
+if __name__ == "__main__":
+    # test score function, when mean and trials have 3d
+    mean_rewards = numpy.array([[0.5, 0.5], [0.5, 0.5]])
+    trial_counts = numpy.array([[0, 0], [0, 0]])
+    ucb_scores = score(mean_rewards, trial_counts, 0)
+    print(ucb_scores)
