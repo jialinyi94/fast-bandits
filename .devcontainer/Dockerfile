@@ -14,3 +14,17 @@ RUN if [ -f "/tmp/conda-tmp/environment.yml" ]; then umask 0002 && /opt/conda/bi
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
+
+# Navigate to the fastbandits directory
+WORKDIR /workspace/fastbandits
+
+# Initialize conda
+RUN conda init bash
+
+# Create a Python 3.11 environment and install the python dependencies in requirements.txt
+RUN conda create -n fastbandits python=3.11
+RUN conda activate fastbandits
+RUN pip install -r requirements.txt
+
+# install the fastbandits package in development mode
+RUN pip install -e .
