@@ -1,6 +1,7 @@
 import numpy
 import xbandits.algo.ucb as ucb
 import xbandits.core.rollout as rollout
+from xbandits.core.regret import realized_rewards
 
 
 def test_score_nd():
@@ -61,10 +62,15 @@ def test_play_nd():
     env2 = rng.binomial(
         1, p=numpy.linspace(0.1, 0.9, arms)[::-1], size=(rounds, arms)
     )
+    env = numpy.stack((env1, env2), axis=0)
     decisions = rollout.play(
-        numpy.stack((env1, env2), axis=0),
+        env,
         ucb.initialize, ucb.select_arm, ucb.update
     )
     one_hot_decisions = numpy.eye(arms)[decisions]
     freq = numpy.mean(one_hot_decisions, axis=-2)
     assert numpy.argmax(freq, axis=-1).tolist() == [arms - 1, 0]
+
+    ucb_rewards = numpy.sum(realized_rewards(env, decisions), axis=-1)
+    random_rewards = numpy.sum(numpy.mean(env, axis=-1), axis=-1)
+    assert numpy.all(ucb_rewards > random_rewards)
