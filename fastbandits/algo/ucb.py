@@ -87,13 +87,3 @@ def update(
         a numpy array of shape (..., num_arms) where the updated number of trials for each arm are stored.
     """
     return update_mean_and_counts(sel_arms, recv_rewards, mean_rewards, trial_counts)
-
-
-def rollout(
-    env: numpy.ndarray,
-    prior_mean_rewards: numpy.ndarray | None,
-    prior_trial_counts: numpy.ndarray | None,
-):
-    """Rollout the UCB algorithm on the environment.
-    """
-    pass
