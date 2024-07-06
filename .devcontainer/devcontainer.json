@@ -11,7 +11,8 @@
 			"extensions": [
 				"njpwerner.autodocstring",
 				"GitHub.copilot",
-				"github.vscode-github-actions"
+				"github.vscode-github-actions",
+				"ms-python.flake8"
 			]
 		}
 	}
