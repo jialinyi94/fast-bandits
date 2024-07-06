@@ -7,5 +7,6 @@ setup(
     author="Jialin Yi",
     install_requires=[
         # list dependencies here
+        "numpy",
     ],
 )
