@@ -4,20 +4,20 @@ from fastbandits.core.statistics import update_mean_and_counts
 
 
 def score(
+    t: int,
     mean_rewards: numpy.ndarray,
     trial_counts: numpy.ndarray,
-    t: int,
 ):
     """Compute the UCB score for each arm.
 
     Parameters
     ----------
+    t : int
+        the current time step.
     mean_rewards : numpy.ndarray
         a numpy array of shape (..., num_arms) where the mean rewards for each arm are stored.
     trial_counts : numpy.ndarray
         a numpy array of shape (..., num_arms) where the number of trials for each arm are stored.
-    t : int
-        the current time step.
 
     Returns
     -------
@@ -36,48 +36,48 @@ def score(
 
 
 def select_arm(
+    t: int,
     mean_rewards: numpy.ndarray,
     trial_counts: numpy.ndarray,
-    t: int,
 ):
     """Select the arm with the highest UCB score.
 
     Parameters
     ----------
+    t : int
+        the current time step.
     mean_rewards : numpy.ndarray
         a numpy array of shape (..., num_arms) where the mean rewards for each arm are stored.
     trial_counts : numpy.ndarray
         a numpy array of shape (..., num_arms) where the number of trials for each arm are stored.
-    t : int
-        the current time step.
 
     Returns
     -------
     numpy.ndarray
         a numpy array of shape (...) where the index of the selected arm is stored.
     """
-    ucb_scores = score(mean_rewards, trial_counts, t)
+    ucb_scores = score(t, mean_rewards, trial_counts)
     return numpy.argmax(ucb_scores, axis=-1)
 
 
 def update(
+    sel_arms: numpy.ndarray,
+    recv_rewards: numpy.ndarray,
     mean_rewards: numpy.ndarray,
     trial_counts: numpy.ndarray,
-    arms: numpy.ndarray,
-    rewards: numpy.ndarray,
 ):
     """Update the states, i.e. mean_reward and trial_count, for the selected arms.
 
     Parameters
     ----------
+    sel_arms : numpy.ndarray
+        a numpy array of shape (...) where the index of the selected arm is stored.
+    recv_rewards : numpy.ndarray
+        a numpy array of shape (...) where the reward for the selected arm is stored.
     mean_rewards : numpy.ndarray
         a numpy array of shape (..., num_arms) where the mean rewards for each arm are stored.
     trial_counts : numpy.ndarray
         a numpy array of shape (..., num_arms) where the number of trials for each arm are stored.
-    arms : numpy.ndarray
-        a numpy array of shape (...) where the index of the selected arm is stored.
-    rewards : numpy.ndarray
-        a numpy array of shape (...) where the reward for the selected arm is stored.
 
     Returns
     -------
@@ -86,7 +86,7 @@ def update(
     trial_counts : numpy.ndarray
         a numpy array of shape (..., num_arms) where the updated number of trials for each arm are stored.
     """
-    return update_mean_and_counts(mean_rewards, trial_counts, arms, rewards)
+    return update_mean_and_counts(sel_arms, recv_rewards, mean_rewards, trial_counts)
 
 
 def rollout(
@@ -97,11 +97,3 @@ def rollout(
     """Rollout the UCB algorithm on the environment.
     """
     pass
-
-
-if __name__ == "__main__":
-    # test score function, when mean and trials have 3d
-    mean_rewards = numpy.array([[0.5, 0.5], [0.5, 0.5]])
-    trial_counts = numpy.array([[0, 0], [0, 0]])
-    ucb_scores = score(mean_rewards, trial_counts, 0)
-    print(ucb_scores)
