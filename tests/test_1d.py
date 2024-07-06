@@ -23,5 +23,5 @@ def test_play_1d():
     env = rng.binomial(1, p=numpy.linspace(0.1, 0.9, arms), size=(rounds, arms))
     decisions = rollout.play(env, ucb.initialize, ucb.select_arm, ucb.update)
     one_hot_decisions = numpy.eye(arms)[decisions]
-    freq = numpy.mean(one_hot_decisions, axis=0)
+    freq = numpy.mean(one_hot_decisions, axis=-2)
     assert numpy.argmax(freq) == arms - 1

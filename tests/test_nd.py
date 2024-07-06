@@ -1,5 +1,7 @@
 import numpy
 import fastbandits.algo.ucb as ucb
+import fastbandits.core.rollout as rollout
+
 
 def test_score_nd():
     mean_rewards = numpy.array(
@@ -41,3 +43,16 @@ def test_select_arm_nd():
     t = 12
     selected_arm = ucb.select_arm(t, mean_rewards, trial_counts)
     assert numpy.allclose(selected_arm, [0, 0])
+
+
+def test_play_nd():
+    rounds, arms = 1000, 10
+    rng = numpy.random.default_rng(0)
+    env1 = rng.binomial(1, p=numpy.linspace(0.1, 0.9, arms), size=(rounds, arms))
+    env2 = rng.binomial(1, p=numpy.linspace(0.1, 0.9, arms)[::-1], size=(rounds, arms))
+    decisions = rollout.play(
+        numpy.stack((env1, env2), axis=0), ucb.initialize, ucb.select_arm, ucb.update
+    )
+    one_hot_decisions = numpy.eye(arms)[decisions]
+    freq = numpy.mean(one_hot_decisions, axis=-2)
+    assert numpy.argmax(freq, axis=-1).tolist() == [arms - 1, 0]
