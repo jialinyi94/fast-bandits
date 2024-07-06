@@ -20,7 +20,7 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["pytest", "pytest-cov"]
-docs = ["sphinx", "sphinx_rtd_theme"]
+docs = ["sphinx", "pydata-sphinx-theme", "numpydoc"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=xbandits"
