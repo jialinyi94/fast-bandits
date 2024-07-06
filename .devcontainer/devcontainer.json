@@ -10,7 +10,8 @@
 		"vscode": {
 			"extensions": [
 				"njpwerner.autodocstring",
-				"GitHub.copilot"
+				"GitHub.copilot",
+				"github.vscode-github-actions"
 			]
 		}
 	}

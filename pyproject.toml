@@ -20,7 +20,13 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["pytest", "pytest-cov"]
+docs = ["sphinx", "sphinx_rtd_theme"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=xbandits"
 testpaths = ["tests"]
+
+
+[tool.flake8]
+max-line-length = 120
+exclude = [".git", "__pycache__", "build", "dist"]
