@@ -1,6 +1,7 @@
 import numpy
 import xbandits.algo.ucb as ucb
 import xbandits.core.rollout as rollout
+from xbandits.core.regret import realized_rewards
 
 
 def test_score_1d():
@@ -35,3 +36,7 @@ def test_play_1d():
     one_hot_decisions = numpy.eye(arms)[decisions]
     freq = numpy.mean(one_hot_decisions, axis=-2)
     assert numpy.argmax(freq) == arms - 1
+
+    ucb_rewards = numpy.sum(realized_rewards(env, decisions), axis=-1)
+    random_rewards = numpy.sum(numpy.mean(env, axis=-1))
+    assert ucb_rewards > random_rewards
