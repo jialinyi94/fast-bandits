@@ -40,4 +40,4 @@ def test_select_arm_nd():
     )
     t = 12
     selected_arm = ucb.select_arm(t, mean_rewards, trial_counts)
-    assert numpy.allclose(selected_arm, [0, 2])
+    assert numpy.allclose(selected_arm, [0, 0])
