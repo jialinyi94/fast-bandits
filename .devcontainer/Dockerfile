@@ -6,17 +6,11 @@ COPY environment.yml* .devcontainer/noop.txt /tmp/conda-tmp/
 RUN if [ -f "/tmp/conda-tmp/environment.yml" ]; then umask 0002 && /opt/conda/bin/conda env update -n base -f /tmp/conda-tmp/environment.yml; fi \
     && rm -rf /tmp/conda-tmp
 
-# [Optional] Uncomment to install a different version of Python than the default
-# RUN conda install -y python=3.6 \
-#     && pip install --no-cache-dir pipx \
-#     && pipx reinstall-all
+# Set the correct working directory
+WORKDIR /workspaces/fast-bandits
 
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
-
-# Navigate to the fastbandits directory
-WORKDIR /workspace/fastbandits
+# Copy requirements.txt and setup.py into the container
+COPY requirements.txt setup.py ./
 
 # Create a Python 3.11 environment
 RUN conda create -n fastbandits python=3.11
