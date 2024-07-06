@@ -4,20 +4,29 @@ from fastbandits.core.regret import realized_rewards
 from fastbandits.core.statistics import update_mean_and_counts
 
 
-def _initialize(
-    num_arms: int,
-    prior_mean_rewards: numpy.ndarray,
-    prior_trial_counts: numpy.ndarray,
-):
-    pass
-
-
 def score(
     mean_rewards: numpy.ndarray,
     trial_counts: numpy.ndarray,
     t: int,
 ):
-    pass
+    """Compute the UCB score for each arm.
+
+    Parameters
+    ----------
+    mean_rewards : numpy.ndarray
+        a numpy array of shape (..., num_arms) where the mean rewards for each arm are stored.
+    trial_counts : numpy.ndarray
+        a numpy array of shape (..., num_arms) where the number of trials for each arm are stored.
+    t : int
+        the current time step.
+
+    Returns
+    -------
+    scores : numpy.ndarray
+        a numpy array of shape (..., num_arms) where the UCB score for each arm is stored.
+    """
+    exploration_bonus = numpy.sqrt(2 * numpy.log(t) / trial_counts)
+    return mean_rewards + exploration_bonus
 
 
 def select_arm(
@@ -39,7 +48,7 @@ def update(
 
 def play(
     env: numpy.ndarray,
-    prior_mean_rewards: numpy.ndarray,
-    prior_trial_counts: numpy.ndarray,
+    prior_mean_rewards: numpy.ndarray | None,
+    prior_trial_counts: numpy.ndarray | None,
 ):
     pass
