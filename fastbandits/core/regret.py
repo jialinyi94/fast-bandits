@@ -16,9 +16,13 @@ def realized_rewards(
     selected_arms : numpy.ndarray
        a numpy array of shape (...) where contains the selected arms 
        at each time step in each environment.
+
+    Returns
+    -------
+    inst_rewards : numpy.ndarray
+        a numpy array of shape (...) where the realized rewards for the selected arms are stored.
     """
     *_, num_arms = envs.shape
-    arms = numpy.arange(num_arms)
-    embedding = (selected_arms[..., numpy.newaxis] == arms).astype(int)
+    embedding = (selected_arms[..., numpy.newaxis] == numpy.arange(num_arms)).astype(int)
     inst_rewards = numpy.sum(envs * embedding, axis=-1)
     return inst_rewards
