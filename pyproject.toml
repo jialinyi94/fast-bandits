@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest", "pytest-cov"]
+test = ["pytest", "pytest-cov", "pytest-profiling", "coverage[toml]"]
 docs = ["sphinx", "pydata-sphinx-theme", "numpydoc"]
 
 [tool.pytest.ini_options]
