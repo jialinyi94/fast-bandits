@@ -66,7 +66,7 @@ jobs:
         make html
     # - name: Deploy to GitHub Pages
     #   uses: peaceiris/actions-gh-pages@v3
-    #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    #   if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main'
     #   with:
     #     github_token: ${{ secrets.GITHUB_TOKEN }}
     #     publish_dir: ./docs/_build/html
@@ -74,7 +74,7 @@ jobs:
   publish:
     needs: [lint, test, docs]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'pull_request'
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
