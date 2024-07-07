@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xbandits"
-version = "0.0.1"
+version = "0.0.2"
 description = "Vectorized bandit algorithms in NumPy and Cython"
 authors = [{name = "Jialin Yi", email = "jialinyi@sas.upenn.edu"}]
 readme = "README.md"
