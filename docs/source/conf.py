@@ -40,6 +40,6 @@ html_theme_options = {
 html_context = {
     "github_user": "jialinyi94",
     "github_repo": "xbandits",
-    "github_version": "master",
+    "github_version": "main",
     "doc_path": "docs",
 }
