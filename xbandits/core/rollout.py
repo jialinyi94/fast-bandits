@@ -59,14 +59,28 @@ def play(
     else:
         assert False, f"{state_init_func.__name__} returned None"
 
+    arm_embeddings = numpy.eye(num_arms)
     decisions = numpy.zeros(env.shape[:-1], dtype=int)
     # play the game
     for t in range(num_rounds):
-        sel_arms = arm_sel_func(t, *states)
-        env_snapshot = env[..., t, :]
-        sel_arms_embedding = numpy.eye(num_arms)[sel_arms]
-        recv_rewards = numpy.sum(env_snapshot * sel_arms_embedding, axis=-1)
-        states = state_upd_func(sel_arms, recv_rewards, *states)
-
+        sel_arms, states = step(
+            env[..., t, :], t, arm_embeddings,
+            arm_sel_func, state_upd_func, *states
+        )
         decisions[..., t] = sel_arms
     return decisions
+
+
+def step(
+    env_snapshot: numpy.ndarray,
+    t: int,
+    arm_embeddings: numpy.ndarray,
+    arm_sel_func: callable,
+    state_upd_func: callable,
+    *states: numpy.ndarray,
+):
+    sel_arms = arm_sel_func(t, *states)
+    sel_arms_embedding = arm_embeddings[sel_arms]
+    recv_rewards = numpy.sum(env_snapshot * sel_arms_embedding, axis=-1)
+    states = state_upd_func(sel_arms, recv_rewards, *states)
+    return sel_arms, states
