@@ -40,7 +40,7 @@ jobs:
         pip install .[test]
     - name: Run tests with coverage
       run: | 
-        pytest --cov=./xbandits --cov-report=xml --cov-report=term -v
+        pytest -v tests
         cat ./coverage.xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4.0.1
