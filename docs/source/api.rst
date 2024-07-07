@@ -37,7 +37,7 @@ Rollout
 Statistics
 ^^^^^^^^^^
 
-.. automodule:: xbandits.core.statsistics
+.. automodule:: xbandits.core.statistics
    :members:
    :undoc-members:
    :show-inheritance:
