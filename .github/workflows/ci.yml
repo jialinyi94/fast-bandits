@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ develop, main ]
   pull_request:
-    branches: [ main ]
+    branches: [ develop, main ]
 
 jobs:
   lint:
@@ -85,10 +85,17 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install build twine
-    - name: Build and publish
+    - name: Build
+      run: python -m build  
+    - name: Publish to TestPyPI
+      if: github.event_name == 'pull_request' && github.base_ref == 'develop'
       env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      run: |
-        python -m build
-        twine upload dist/*
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.TESTPYPI_API_TOKEN }}
+      run: twine upload --repository testpypi dist/*
+    - name: Publish to PyPI
+      if: github.event_name == 'pull_request' && github.base_ref == 'main'
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: twine upload dist/*
