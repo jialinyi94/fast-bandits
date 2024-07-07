@@ -34,7 +34,16 @@ def score(
     mean_rewards: numpy.ndarray,
     trial_counts: numpy.ndarray,
 ):
-    """Compute the UCB score for each arm.
+    r"""Compute the UCB score for each arm.
+
+    .. math::
+
+        UCB = \begin{cases}
+        \text{mean\_rewards}
+        + \sqrt{\frac{2 \log(t)}{\text{trial\_counts}}}
+        & \text{if trial\_counts} > 0 \\
+        \infty & \text{otherwise}
+        \end{cases}
 
     Parameters
     ----------
