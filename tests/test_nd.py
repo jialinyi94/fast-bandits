@@ -54,22 +54,24 @@ def test_select_arm_nd():
 
 
 def test_play_nd():
-    rounds, arms = 1000, 10
+    num_envs, rounds, arms = 50, 100000, 10
     rng = numpy.random.default_rng(0)
-    env1 = rng.binomial(
-        1, p=numpy.linspace(0.1, 0.9, arms), size=(rounds, arms)
+    env = numpy.stack(
+        [
+            rng.binomial(
+                1, p=numpy.linspace(0.1, 0.9, arms), size=(rounds, arms)
+            )
+            for _ in range(num_envs)
+        ], axis=0
     )
-    env2 = rng.binomial(
-        1, p=numpy.linspace(0.1, 0.9, arms)[::-1], size=(rounds, arms)
-    )
-    env = numpy.stack((env1, env2), axis=0)
     decisions = rollout.play(
         env,
         ucb.initialize, ucb.select_arm, ucb.update
     )
     one_hot_decisions = numpy.eye(arms)[decisions]
     freq = numpy.mean(one_hot_decisions, axis=-2)
-    assert numpy.argmax(freq, axis=-1).tolist() == [arms - 1, 0]
+    assert numpy.argmax(freq, axis=-1).tolist() == \
+        [arms - 1 for _ in range(num_envs)]
 
     ucb_rewards = numpy.sum(realized_rewards(env, decisions), axis=-1)
     random_rewards = numpy.sum(numpy.mean(env, axis=-1), axis=-1)

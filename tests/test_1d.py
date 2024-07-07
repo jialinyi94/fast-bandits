@@ -27,7 +27,7 @@ def test_select_arm_1d():
 
 
 def test_play_1d():
-    rounds, arms = 1000, 10
+    rounds, arms = 100000, 10
     rng = numpy.random.default_rng(0)
     env = rng.binomial(
         1, p=numpy.linspace(0.1, 0.9, arms), size=(rounds, arms)
