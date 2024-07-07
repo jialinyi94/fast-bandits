@@ -90,13 +90,13 @@ jobs:
     - name: Build
       run: python -m build  
     - name: Publish to TestPyPI
-      if: github.event_name == 'pull_request' && github.base_ref == 'develop'
+      if: github.ref == 'refs/heads/main'
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.TESTPYPI_API_TOKEN }}
       run: twine upload --repository testpypi dist/*
     - name: Publish to PyPI
-      if: github.event_name == 'pull_request' && github.base_ref == 'main'
+      if: github.ref == 'refs/heads/main'
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
